@@ -15,14 +15,16 @@ function divide(a, b) {
 }
 
 function operate(a, b, op) {
+	a = parseInt(a);
+	b = parseInt(b);
 	switch(op) {
-		case 'add': 
+		case '+': 
 			return result = add(a, b);
-		case 'subtract': 
+		case '-': 
 			return result = subtract(a, b);
-		case 'multiply':
+		case 'x':
 			return result = multiply(a, b);
-		case 'divide': 
+		case '/': 
 			return result = divide(a, b);
 		default: 
 			return 'Enter an operand';
@@ -32,8 +34,8 @@ function operate(a, b, op) {
 const output = document.querySelector('.output');
 const btns = Array.from(document.querySelectorAll('.grid > button'));
 
-function outputTextContent(key) {
-	switch(firstKey) {
+function displayKey(key) {
+	switch(key) {
 		case '0':
 			output.textContent = '0';
 			break;
@@ -80,18 +82,45 @@ function outputTextContent(key) {
 			output.textContent = '=';
 			break;
 		case 'AC':
-			output.textContent = '';
+			output.textContent = '0';
 			break;
 	}
 }
 
+const statement = new Object();
+
+function isNumeric(val) {
+	return /^-?\d+$/.test(val.toString());
+}
+
+function appendToDisplay(key) {
+	output.textContent += key;
+}
+
 function btnHandler(event) {
-	let firstKey, secondKey;
-	if(firstKey == null) {
-		firstKey = event.target.textContent
-	} else if(secondKey == null) {
-			secondKey = event.target.textContent;
+	let key = event.target.textContent
+	if (key === 'AC') {
+		for (let key in statement) {
+			delete statement[key];
 		}
+		displayKey(key);
+	} else if (statement.firstKey == null && isNumeric(key)) {
+		statement.firstKey = key;
+		displayKey(key);
+	}  else if (statement.firstKey == null && !isNumeric(key)) {
+		statement.firstKey = 0;
+		statement.secondKey = key;
+		appendToDisplay(key);
+	}  else if (statement.firstKey != null && isNumeric(key) && statement.secondKey == null) {
+		statement.firstKey += key;
+		appendToDisplay(key);
+	} else if (statement.secondKey == null) {
+		statement.secondKey = key;
+		appendToDisplay(key);
+	} else if (statement.thirdKey == null) {
+		statement.thirdKey = key;
+		output.textContent = `${operate(statement.firstKey, statement.thirdKey, statement.secondKey)}`;
+	}
 }
 
 btns.forEach(btn => {
