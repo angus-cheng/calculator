@@ -87,23 +87,30 @@ function displayKey(key) {
 	}
 }
 
-const statement = new Object();
+let statement = [0];
 
-function isNumeric(val) {
-	return /^-?\d+$/.test(val.toString());
+function isNumeric(char) {
+	return (/([0-9]|\.)/.test(char));
 }
 
 function appendToDisplay(key) {
 	output.textContent += key;
 }
 
-function btnHandler(event) {
+/*
 	let key = event.target.textContent
 	if (key === 'AC') {
-		for (let key in statement) {
-			delete statement[key];
+		for (let property in statement) {
+			delete statement[property];
 		}
 		displayKey(key);
+	}  else if (key === '.' && statement.firstKey.includes(key)) {
+		return;
+	}
+	else if (key === '.' && !statement.firstKey.includes(key)) {
+		statement.firstKey += key;
+		console.log(key);
+		appendToDisplay(key);
 	} else if (statement.firstKey == null && isNumeric(key)) {
 		statement.firstKey = key;
 		displayKey(key);
@@ -111,7 +118,7 @@ function btnHandler(event) {
 		statement.firstKey = 0;
 		statement.secondKey = key;
 		appendToDisplay(key);
-	}  else if (statement.firstKey != null && isNumeric(key) && statement.secondKey == null) {
+	}  else if (statement.firstKey != null && (isNumeric(key) || (!isNaN(parseFloat(key)))) && statement.secondKey == null) {
 		statement.firstKey += key;
 		appendToDisplay(key);
 	} else if (statement.secondKey == null) {
@@ -120,6 +127,31 @@ function btnHandler(event) {
 	} else if (statement.thirdKey == null) {
 		statement.thirdKey = key;
 		output.textContent = `${operate(statement.firstKey, statement.thirdKey, statement.secondKey)}`;
+	} else {
+		return;
+	}
+}
+*/
+
+function btnHandler (event) {
+	let key = event.target.textContent;
+	if (!isNumeric(key)) {
+		statement.push(key);
+		output.textContent = key;
+		console.log('operand');
+	} else if (!isNumeric(statement[statement.length-1])) {
+		statement.push(key);
+		console.log('new num');
+	}  else if (statement[0] === 0) {
+		statement[0] = key;
+		output.textContent = key;
+	}  else if (key === '.' && statement[statement.length-1].includes('.')){
+		return;
+	}
+	else {
+		statement[statement.length-1] += key; 
+		appendToDisplay(key);
+		console.log('prev num');
 	}
 }
 
