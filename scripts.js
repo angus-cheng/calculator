@@ -46,6 +46,11 @@ function btnHandler (event) {
 	if (key === '=' && statement.length < 3) {
 		output.textContent = statement[0];
 
+	} else if (key === 'AC') {
+		statement.splice(0, statement.length);
+		statement.push(0);
+		output.textContent = statement[0];
+
 	// Check if operand or equals has been entered before
 	} else if ((!isNumeric(key) && statement.length === 3) | key === '=') {
 		let num1 = statement[0];
