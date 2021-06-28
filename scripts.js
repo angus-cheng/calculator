@@ -87,70 +87,53 @@ function displayKey(key) {
 	}
 }
 
-let statement = [0];
-
 function isNumeric(char) {
 	return (/([0-9]|\.)/.test(char));
 }
 
-function appendToDisplay(key) {
-	output.textContent += key;
-}
-
-/*
-	let key = event.target.textContent
-	if (key === 'AC') {
-		for (let property in statement) {
-			delete statement[property];
-		}
-		displayKey(key);
-	}  else if (key === '.' && statement.firstKey.includes(key)) {
-		return;
-	}
-	else if (key === '.' && !statement.firstKey.includes(key)) {
-		statement.firstKey += key;
-		console.log(key);
-		appendToDisplay(key);
-	} else if (statement.firstKey == null && isNumeric(key)) {
-		statement.firstKey = key;
-		displayKey(key);
-	}  else if (statement.firstKey == null && !isNumeric(key)) {
-		statement.firstKey = 0;
-		statement.secondKey = key;
-		appendToDisplay(key);
-	}  else if (statement.firstKey != null && (isNumeric(key) || (!isNaN(parseFloat(key)))) && statement.secondKey == null) {
-		statement.firstKey += key;
-		appendToDisplay(key);
-	} else if (statement.secondKey == null) {
-		statement.secondKey = key;
-		appendToDisplay(key);
-	} else if (statement.thirdKey == null) {
-		statement.thirdKey = key;
-		output.textContent = `${operate(statement.firstKey, statement.thirdKey, statement.secondKey)}`;
-	} else {
-		return;
-	}
-}
-*/
+let statement = [0];
 
 function btnHandler (event) {
 	let key = event.target.textContent;
-	if (!isNumeric(key)) {
+	if (key === '=' && statement.length < 3) {
+		output.textContent = statement[0];
+	}
+
+	// Check if operand has been entered before
+	else if ((!isNumeric(key) && statement.length === 3) | key === '=') {
+		let num1 = statement[0];
+		let op = statement[1];
+		let num2 = statement[2];
+		let newNum = operate(num1, num2, op);
+		statement.splice(0, statement.length, newNum);
+		statement.push(key);
+		output.textContent = newNum;
+	
+	// Check if key entered is an operand
+	} else if (!isNumeric(key)) {
 		statement.push(key);
 		output.textContent = key;
 		console.log('operand');
+
+	// Check if last keypress was an operand
 	} else if (!isNumeric(statement[statement.length-1])) {
 		statement.push(key);
+		output.textContent = key;
 		console.log('new num');
+
+	// Check if first number is 0
 	}  else if (statement[0] === 0) {
 		statement[0] = key;
 		output.textContent = key;
+
+	// Check if there is already a decimal point in number
 	}  else if (key === '.' && statement[statement.length-1].includes('.')){
 		return;
-	}
-	else {
+	
+	// Append digit to current number
+	} else {
 		statement[statement.length-1] += key; 
-		appendToDisplay(key);
+		output.textContent += key;
 		console.log('prev num');
 	}
 }
