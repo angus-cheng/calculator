@@ -92,21 +92,22 @@ function isNumeric(char) {
 }
 
 let statement = [0];
+let prevKey;
 
 function btnHandler (event) {
+	console.log(prevKey);
 	let key = event.target.textContent;
 	if (key === '=' && statement.length < 3) {
 		output.textContent = statement[0];
-	}
 
-	// Check if operand has been entered before
-	else if ((!isNumeric(key) && statement.length === 3) | key === '=') {
+	// Check if operand or equals has been entered before
+	} else if ((!isNumeric(key) && statement.length === 3) | key === '=') {
 		let num1 = statement[0];
 		let op = statement[1];
 		let num2 = statement[2];
 		let newNum = operate(num1, num2, op);
 		statement.splice(0, statement.length, newNum);
-		statement.push(key);
+		if (key !== '=') statement.push(key);
 		output.textContent = newNum;
 	
 	// Check if key entered is an operand
@@ -130,12 +131,20 @@ function btnHandler (event) {
 	}  else if (key === '.' && statement[statement.length-1].includes('.')){
 		return;
 	
+	// Check if previous key was '=' to reset statement with new num
+	} else if (prevKey == '=') {
+		statement.splice(0, statement.length);
+		statement[0] = key;
+		output.textContent = key;
+
 	// Append digit to current number
 	} else {
 		statement[statement.length-1] += key; 
 		output.textContent += key;
 		console.log('prev num');
 	}
+
+	prevKey = key;
 }
 
 btns.forEach(btn => {
