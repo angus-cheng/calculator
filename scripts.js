@@ -41,6 +41,7 @@ function isNumeric(char) {
 let statement = [0];
 let prevKey;
 
+
 function btnHandler (event) {
 	let key = event.target.textContent;
 	if (key === '=' && statement.length < 3) {
@@ -73,6 +74,9 @@ function btnHandler (event) {
 
 	// Check if first number is 0
 	}  else if (statement[0] === 0) {
+		if (key === '0') {
+			return;
+		}
 		statement[0] = key;
 		output.textContent = key;
 
@@ -98,3 +102,13 @@ function btnHandler (event) {
 btns.forEach(btn => {
 	btn.addEventListener('click', btnHandler);
 });
+
+// Keystroke compatibility
+document.addEventListener('keydown', logKey);
+function logKey(e) {
+	console.log(`${e.code}`);
+	switch (e.code) {
+		case 'Digit1':
+			break;
+	}
+}
