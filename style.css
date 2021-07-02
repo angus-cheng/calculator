@@ -1,10 +1,88 @@
 .grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: repeat(4, 1fr);
-	gap: 10px
+	grid-template-rows: repeat(5, 1fr);
+	grid-template-areas: 
+		". . . AC"
+		"seven eight nine divide"
+		"four five six multiply"
+		"one two three subtract"
+		"zero period equals addition";
+	gap: 10px;
 }
 
 .output {
-	background-color: burlywood;
+	border: 1px solid grey;
+	border-radius: 5px;
+	margin: 10px;
+	padding: 15px 0 5px 5px;
+	text-indent: 5px;
+}
+
+.nine {
+	grid-area: nine;
+}
+
+.eight {
+	grid-area: eight;
+}
+
+.seven {
+	grid-area: seven;
+}
+
+.six {
+	grid-area: six;
+}
+
+.five {
+	grid-area: five;
+}
+
+.four {
+	grid-area: four;
+}
+
+.three {
+	grid-area: three;
+}
+
+.two {
+	grid-area: two;
+}
+
+.one {
+	grid-area: one;
+}
+
+.zero {
+	grid-area: zero;
+}
+
+.period {
+	grid-area: period;
+}
+
+.equals {
+	grid-area: equals;
+}
+
+.add {
+	grid-area: addition;
+}
+
+.subtract {
+	grid-area: subtract;
+}
+
+.multiply {
+	grid-area: multiply;
+}
+
+.divide {
+	grid-area: divide;
+}
+
+.allClear {
+	grid-area: AC;
 }
