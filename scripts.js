@@ -41,9 +41,12 @@ function isNumeric(char) {
 let statement = [0];
 let prevKey;
 
-
-function btnHandler (event) {
-	let key = event.target.textContent;
+/**
+ * Parses key or button press and feeds into calculator
+ * @param {any key or button press} key 
+ * @returns 
+ */
+function calculate(key) {
 	if (key === '=' && statement.length < 3) {
 		output.textContent = statement[0];
 
@@ -99,16 +102,65 @@ function btnHandler (event) {
 	prevKey = key;
 }
 
+function btnHandler(event) {
+	let key = event.target.textContent;
+	calculate(key);
+}
+
 btns.forEach(btn => {
 	btn.addEventListener('click', btnHandler);
 });
 
 // Keystroke compatibility
 document.addEventListener('keydown', logKey);
+
 function logKey(e) {
-	console.log(`${e.code}`);
-	switch (e.code) {
-		case 'Digit1':
+	console.log(e.keyCode);
+	if (e.keyCode > 47 && e.keyCode < 58) {
+		if (e.keyCode === 56 && e.shiftKey) {
+			calculate('x');
+		} else {
+			calculate(e.keyCode);
+		}
+
+	}
+
+	switch (e.keyCode) {
+		case 191:
+			calculate('/');
 			break;
+
+		case 88:
+			calculate('x');
+			break;
+
+		case 61:
+			if (e.shiftKey) {
+				console.log('additon')
+				calculate('+');
+			} else {
+				console.log('equals')
+				calculate('=');
+			}
+			break;
+
+		case 13:
+			calculate('=');
+			break;
+
+		case 173:
+			calculate('-');
+			break;
+
+		case 27: 
+			calculate('AC');
+			break;
+
+		case 190:
+			calculate('.');
+			break;
+
+		default:
+			return;
 	}
 }
