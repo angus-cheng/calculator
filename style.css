@@ -85,4 +85,6 @@
 
 .allClear {
 	grid-area: AC;
+	background-color: lightblue;
+	border-color: lightblue;
 }

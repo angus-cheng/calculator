@@ -115,7 +115,6 @@ btns.forEach(btn => {
 document.addEventListener('keydown', logKey);
 
 function logKey(e) {
-	console.log(e.keyCode);
 	if (e.keyCode > 47 && e.keyCode < 58) {
 		if (e.keyCode === 56 && e.shiftKey) {
 			calculate('x');
